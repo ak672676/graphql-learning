@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Grid } from "semantic-ui-react";
 import PostCard from "../components/PostCard";
 function Home() {
-  const {
-    loading,
-    data: { getPosts: posts },
-  } = useQuery(FETCH_POSTS_QUERY);
+  const [posts, setPosts] = useState([]);
+  const { loading, data } = useQuery(FETCH_POSTS_QUERY);
+
+  useEffect(() => {
+    if (data) {
+      const { getPosts } = data;
+      setPosts(getPosts);
+    }
+  }, [data]);
 
   return (
     <Grid columns={3}>
